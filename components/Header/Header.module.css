@@ -1,5 +1,18 @@
 .header {
-  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  background-color: transparent;
+  transition: background-color 0.3s ease;
+}
+
+.header.scrolled {
+  background-color: #618dc3;
+}
+
+.inner {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -46,6 +59,10 @@
   font-size: 16px;
   font-weight: 600;
   line-height: 1.5;
+}
+
+.header.scrolled .phone {
+  color: var(--color-white);
 }
 
 .workingHours {

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Roboto } from "next/font/google";
+import { Header } from "@/components/Header";
 import { SITE } from "@/lib/constants";
 import "./globals.css";
 
@@ -22,7 +23,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ru" className={roboto.variable}>
-      <body>{children}</body>
+      <body>
+        <Header />
+        {children}
+      </body>
     </html>
   );
 }
