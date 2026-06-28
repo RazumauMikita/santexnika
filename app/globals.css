@@ -72,6 +72,12 @@ a {
   padding-inline: var(--container-padding);
 }
 
+@media (max-width: 899px) {
+  :root {
+    --header-height: 64px;
+  }
+}
+
 @media (min-width: 768px) {
   :root {
     --container-padding: 24px;

@@ -12,7 +12,7 @@ import {
   normalizePhoneDigits,
   removeLastPhoneDigit,
 } from "@/lib/belarusPhone";
-import lockIcon from "@/public/icons/lock_popup.png";
+import lockIcon from "@/public/icons/lock.png";
 import styles from "./HeroContactForm.module.css";
 
 export function HeroContactForm() {

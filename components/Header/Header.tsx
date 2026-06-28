@@ -21,6 +21,7 @@ const workingHours = "Время работы с 8.00 до 23.00";
 export function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -33,13 +34,45 @@ export function Header() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  useEffect(() => {
+    if (!isMenuOpen) return;
+
+    document.body.style.overflow = "hidden";
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setIsMenuOpen(false);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.body.style.overflow = "";
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [isMenuOpen]);
+
+  const handleMenuToggle = () => {
+    setIsMenuOpen((prev) => !prev);
+  };
+
+  const handleMenuClose = () => {
+    setIsMenuOpen(false);
+  };
+
+  const handleCallbackClick = () => {
+    setIsMenuOpen(false);
+    setIsModalOpen(true);
+  };
+
   return (
     <>
       <header
-        className={`${styles.header} ${isScrolled ? styles.scrolled : ""}`}
+        className={`${styles.header} ${isScrolled || isMenuOpen ? styles.scrolled : ""}`}
       >
         <div className={`container ${styles.inner}`}>
-          <Link href="/" className={styles.logo}>
+          <Link href="/" className={styles.logo} onClick={handleMenuClose}>
             <Image
               src={logoImage}
               alt={SITE.name}
@@ -47,7 +80,8 @@ export function Header() {
               priority
             />
           </Link>
-          <nav>
+
+          <nav className={styles.desktopNav} aria-label="Основная навигация">
             <ul className={styles.navList}>
               {navItems.map((item) => (
                 <li key={item.href} className={styles.navListItem}>
@@ -56,13 +90,59 @@ export function Header() {
               ))}
             </ul>
           </nav>
-          <div className={styles.contact}>
+
+          <div className={styles.desktopContact}>
             <span className={styles.phone}>{phone}</span>
             <span className={styles.workingHours}>{workingHours}</span>
             <button
               type="button"
               className={styles.callbackBtn}
               onClick={() => setIsModalOpen(true)}
+            >
+              Заказать бесплатный звонок
+            </button>
+          </div>
+
+          <button
+            type="button"
+            className={`${styles.burgerBtn} ${isMenuOpen ? styles.burgerBtnOpen : ""}`}
+            onClick={handleMenuToggle}
+            aria-label={isMenuOpen ? "Закрыть меню" : "Открыть меню"}
+            aria-expanded={isMenuOpen}
+            aria-controls="mobile-menu"
+          >
+            <span className={styles.burgerLine} />
+            <span className={styles.burgerLine} />
+            <span className={styles.burgerLine} />
+          </button>
+        </div>
+
+        <div
+          id="mobile-menu"
+          className={`${styles.mobileMenu} ${isMenuOpen ? styles.mobileMenuOpen : ""}`}
+          aria-hidden={!isMenuOpen}
+        >
+          <nav aria-label="Мобильная навигация">
+            <ul className={styles.mobileNavList}>
+              {navItems.map((item) => (
+                <li key={item.href} className={styles.mobileNavItem}>
+                  <Link href={item.href} onClick={handleMenuClose}>
+                    {item.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
+
+          <div className={styles.mobileContact}>
+            <a className={styles.mobilePhone} href="tel:+375336666994">
+              {phone}
+            </a>
+            <span className={styles.mobileWorkingHours}>{workingHours}</span>
+            <button
+              type="button"
+              className={styles.mobileCallbackBtn}
+              onClick={handleCallbackClick}
             >
               Заказать бесплатный звонок
             </button>
