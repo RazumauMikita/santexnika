@@ -1,7 +1,14 @@
 import type { Metadata } from "next";
-import { Header } from "@/components/Header";
+import { Roboto } from "next/font/google";
 import { SITE } from "@/lib/constants";
 import "./globals.css";
+
+const roboto = Roboto({
+  subsets: ["latin", "cyrillic"],
+  weight: ["400", "500", "700"],
+  variable: "--font-roboto",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   title: `${SITE.name} — услуги сантехника в Витебске`,
@@ -14,11 +21,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ru">
-      <body>
-        <Header />
-        {children}
-      </body>
+    <html lang="ru" className={roboto.variable}>
+      <body>{children}</body>
     </html>
   );
 }
