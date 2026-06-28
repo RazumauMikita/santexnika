@@ -13,7 +13,21 @@
 
   --container-max: 1200px;
   --container-padding: 16px;
+  --header-height: 80px;
   --font-family: var(--font-roboto), Arial, Helvetica, sans-serif;
+}
+
+@font-face {
+  font-family: junegullregular;
+  src: url("/fonts/junegullregular.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+.junegullregular {
+  font-family: junegullregular, sans-serif;
+  font-weight: 400;
 }
 
 html {

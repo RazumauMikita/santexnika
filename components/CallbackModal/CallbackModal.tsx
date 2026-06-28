@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useCallback, useEffect, useState } from "react";
+import { PrivacyPolicyModal } from "@/components/PrivacyPolicyModal";
 import { sendCallbackEmail } from "@/lib/actions/sendCallbackEmail";
 import {
   appendPhoneDigit,
@@ -55,10 +56,7 @@ export function CallbackModal({ isOpen, onClose }: CallbackModalProps) {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key !== "Escape") return;
 
-      if (isPrivacyOpen) {
-        setIsPrivacyOpen(false);
-        return;
-      }
+      if (isPrivacyOpen) return;
 
       handleClose();
     };
@@ -184,132 +182,87 @@ export function CallbackModal({ isOpen, onClose }: CallbackModalProps) {
           aria-modal="true"
           aria-label="Заказать обратный звонок"
         >
-        <button
-          type="button"
-          className={styles.closeBtn}
-          onClick={handleClose}
-          aria-label="Закрыть"
-        >
-          <Image src={closeIcon} alt="" width={22} height={22} />
-        </button>
-
-        <form className={styles.form} onSubmit={handleSubmit} noValidate>
-          <div className={styles.card}>
-            <div className={styles.field}>
-              <input
-                type="text"
-                name="name"
-                className={`${styles.input} ${nameError ? styles.inputInvalid : ""}`}
-                placeholder="Имя"
-                autoComplete="name"
-                value={name}
-                onChange={(event) => {
-                  setName(event.target.value);
-                  if (nameError) {
-                    setNameError(getNameError(event.target.value) ?? "");
-                  }
-                }}
-                onBlur={() => setNameError(getNameError(name) ?? "")}
-                disabled={isSubmitting}
-              />
-            </div>
-
-            <div className={styles.field}>
-              <input
-                type="tel"
-                name="phone"
-                className={`${styles.input} ${phoneError ? styles.inputInvalid : ""}`}
-                placeholder={BELARUS_PHONE_PLACEHOLDER}
-                autoComplete="tel"
-                inputMode="numeric"
-                value={phone}
-                onChange={handlePhoneChange}
-                onKeyDown={handlePhoneKeyDown}
-                onBeforeInput={handlePhoneBeforeInput}
-                onPaste={handlePhonePaste}
-                onFocus={handlePhoneFocus}
-                onBlur={handlePhoneBlur}
-                disabled={isSubmitting}
-              />
-            </div>
-
-            <p className={styles.formError}>{formError}</p>
-
-            <div className={styles.privacy}>
-              <span className={styles.lockIcon} aria-hidden="true">
-                <Image src={lockIcon} alt="" width={28} height={40} />
-              </span>
-              <button
-                type="button"
-                className={styles.privacyText}
-                onClick={() => setIsPrivacyOpen(true)}
-              >
-                Гарантируем сохранность ваших данных и обязуемся не передавать
-                их третьим лицам
-              </button>
-            </div>
-          </div>
-
           <button
-            type="submit"
-            className={styles.submitBtn}
-            disabled={isSubmitting}
+            type="button"
+            className={styles.closeBtn}
+            onClick={handleClose}
+            aria-label="Закрыть"
           >
-            {isSubmitting ? "Отправка..." : "Оставить заявку"}
+            <Image src={closeIcon} alt="" width={22} height={22} />
           </button>
-        </form>
+
+          <form className={styles.form} onSubmit={handleSubmit} noValidate>
+            <div className={styles.card}>
+              <div className={styles.field}>
+                <input
+                  type="text"
+                  name="name"
+                  className={`${styles.input} ${nameError ? styles.inputInvalid : ""}`}
+                  placeholder="Имя"
+                  autoComplete="name"
+                  value={name}
+                  onChange={(event) => {
+                    setName(event.target.value);
+                    if (nameError) {
+                      setNameError(getNameError(event.target.value) ?? "");
+                    }
+                  }}
+                  onBlur={() => setNameError(getNameError(name) ?? "")}
+                  disabled={isSubmitting}
+                />
+              </div>
+
+              <div className={styles.field}>
+                <input
+                  type="tel"
+                  name="phone"
+                  className={`${styles.input} ${phoneError ? styles.inputInvalid : ""}`}
+                  placeholder={BELARUS_PHONE_PLACEHOLDER}
+                  autoComplete="tel"
+                  inputMode="numeric"
+                  value={phone}
+                  onChange={handlePhoneChange}
+                  onKeyDown={handlePhoneKeyDown}
+                  onBeforeInput={handlePhoneBeforeInput}
+                  onPaste={handlePhonePaste}
+                  onFocus={handlePhoneFocus}
+                  onBlur={handlePhoneBlur}
+                  disabled={isSubmitting}
+                />
+              </div>
+
+              <p className={styles.formError}>{formError}</p>
+
+              <div className={styles.privacy}>
+                <span className={styles.lockIcon} aria-hidden="true">
+                  <Image src={lockIcon} alt="" width={28} height={40} />
+                </span>
+                <button
+                  type="button"
+                  className={styles.privacyText}
+                  onClick={() => setIsPrivacyOpen(true)}
+                >
+                  Гарантируем сохранность ваших данных и обязуемся не передавать
+                  их третьим лицам
+                </button>
+              </div>
+            </div>
+
+            <button
+              type="submit"
+              className={`${styles.submitBtn} junegullregular`}
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? "Отправка..." : "Оставить заявку"}
+            </button>
+          </form>
         </div>
       </div>
 
-      {isPrivacyOpen && (
-        <div
-          className={styles.privacyOverlay}
-          onClick={() => setIsPrivacyOpen(false)}
-          role="presentation"
-        >
-          <div
-            className={styles.privacyModal}
-            onClick={(event) => event.stopPropagation()}
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="privacy-modal-title"
-          >
-            <button
-              type="button"
-              className={styles.closeBtn}
-              onClick={() => setIsPrivacyOpen(false)}
-              aria-label="Закрыть"
-            >
-              <Image src={closeIcon} alt="" width={22} height={22} />
-            </button>
-
-            <div className={styles.privacyCard}>
-              <h2 id="privacy-modal-title" className={styles.privacyTitle}>
-                Политика конфиденциальности
-              </h2>
-              <div className={styles.privacyContent}>
-                <p>
-                  Компания уважает ваше право и соблюдает конфиденциальность при
-                  заполнении, передаче и хранении ваших конфиденциальных
-                  сведений. Размещение заявки на сайте компании «Сантехника
-                  Витебск» означает ваше согласие на обработку данных.
-                </p>
-                <p>
-                  Под персональными данными подразумевается информация,
-                  относящаяся к субъекту персональных данных, в частности
-                  фамилия, имя и отчество, дата рождения, адрес, телефон, адрес
-                  электронной почты, семейное, имущественное положение и иные
-                  данные.
-                </p>
-                <p>
-                  Целью обработки персональных данных является оказание услуг
-                  для клиентов компании «Сантехника Витебск».
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
+      <PrivacyPolicyModal
+        isOpen={isPrivacyOpen}
+        onClose={() => setIsPrivacyOpen(false)}
+      />
     </>
   );
 }
