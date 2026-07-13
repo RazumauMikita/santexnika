@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useState } from "react";
 import { PrivacyPolicyModal } from "@/components/PrivacyPolicyModal";
-import { sendCallbackEmail } from "@/lib/actions/sendCallbackEmail";
+import { submitCallbackForm } from "@/lib/submitCallbackForm";
 import {
   appendPhoneDigit,
   formatBelarusPhoneDisplay,
@@ -119,7 +119,7 @@ export function HeroContactForm() {
     setIsSubmitting(true);
 
     try {
-      const result = await sendCallbackEmail(name.trim(), phone);
+      const result = await submitCallbackForm(name.trim(), phone);
 
       if (!result.success) {
         throw new Error(result.error);

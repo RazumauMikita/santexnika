@@ -1,6 +1,7 @@
 .section {
   width: 100%;
   min-height: 420px;
+  background-color: #1a6fb5;
   background-image: url("/images/header_1.jpg");
   background-repeat: no-repeat;
   background-position: center;

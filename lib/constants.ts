@@ -6,6 +6,10 @@ export const SITE = {
   workingHours: "Время работы с 8.00 до 23.00",
 } as const;
 
+export const FORM = {
+  accessKey: process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY ?? "",
+} as const;
+
 export const NAV_LINKS = [
   { label: "Услуги", href: "#services" },
   { label: "Объекты", href: "#objects" },
