@@ -6,6 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "prepare:hosting": "npm run build && node scripts/prepare-hosting.js",
     "lint": "eslint"
   },
   "dependencies": {
