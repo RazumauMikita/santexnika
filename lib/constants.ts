@@ -1,9 +1,19 @@
 export const SITE = {
   name: "Сантехника Витебск",
   tagline: "Профессиональная сантехническая служба в Витебске и области",
-  phone: "8 (033) 6666-99-4",
-  phoneHref: "tel:+375336666994",
+  phone: "8 (033) 903-30-04",
+  phoneHref: "tel:+375339033004",
   workingHours: "Время работы с 8.00 до 23.00",
+  paymentMethods: "Наличный и безналичный расчёт",
+} as const;
+
+export const LEGAL = {
+  ownerLabel: "ИП Гасаналиев А.Н.",
+  unp: "391520935",
+  email: "Vitebskiisania12300@gmail.com",
+  legalAddress:
+    "Витебская обл., аг. Бабиничи, ул. Калинина, д. 2, оф. 2",
+  registrationDate: "29 июля 2025 г.",
 } as const;
 
 export const FORM = {

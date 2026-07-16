@@ -1,9 +1,11 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { useRef, useState } from "react";
+import { FormHoneypot } from "@/components/FormHoneypot";
 import { PrivacyPolicyModal } from "@/components/PrivacyPolicyModal";
 import { submitCallbackForm } from "@/lib/submitCallbackForm";
+import { useSubmitLock } from "@/lib/useSubmitLock";
 import {
   appendPhoneDigit,
   formatBelarusPhoneDisplay,
@@ -16,7 +18,7 @@ import lockIcon from "@/public/icons/lock.png";
 import styles from "./HeroContactForm.module.css";
 
 export function HeroContactForm() {
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { isSubmitting, runLocked } = useSubmitLock();
   const [error, setError] = useState("");
   const [name, setName] = useState("");
   const [phoneDigits, setPhoneDigits] = useState("");
@@ -24,18 +26,21 @@ export function HeroContactForm() {
   const [phoneError, setPhoneError] = useState("");
   const [isPrivacyOpen, setIsPrivacyOpen] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [honeypot, setHoneypot] = useState("");
+  const formOpenedAtRef = useRef(Date.now());
 
   const phone = formatBelarusPhoneDisplay(phoneDigits);
   const formError = error || nameError || phoneError;
 
   const resetForm = () => {
     setError("");
-    setIsSubmitting(false);
     setName("");
     setPhoneDigits("");
     setNameError("");
     setPhoneError("");
     setIsSuccess(false);
+    setHoneypot("");
+    formOpenedAtRef.current = Date.now();
   };
 
   const updatePhoneDigits = (nextDigits: string) => {
@@ -116,31 +121,34 @@ export function HeroContactForm() {
       return;
     }
 
-    setIsSubmitting(true);
+    await runLocked(async () => {
+      try {
+        const result = await submitCallbackForm(name.trim(), phone, {
+          honeypot,
+          formOpenedAt: formOpenedAtRef.current,
+        });
 
-    try {
-      const result = await submitCallbackForm(name.trim(), phone);
+        if (!result.success) {
+          throw new Error(result.error);
+        }
 
-      if (!result.success) {
-        throw new Error(result.error);
+        resetForm();
+        setIsSuccess(true);
+      } catch (submitError) {
+        setError(
+          submitError instanceof Error
+            ? submitError.message
+            : "Не удалось отправить заявку",
+        );
       }
-
-      resetForm();
-      setIsSuccess(true);
-    } catch (submitError) {
-      setError(
-        submitError instanceof Error
-          ? submitError.message
-          : "Не удалось отправить заявку",
-      );
-    } finally {
-      setIsSubmitting(false);
-    }
+    });
   };
 
   return (
     <>
       <form className={styles.form} onSubmit={handleSubmit} noValidate>
+        <FormHoneypot value={honeypot} onChange={setHoneypot} />
+
         <div className={styles.header}>
           <p className={styles.headerTop}>Получите</p>
           <p className={styles.headerMain}>бесплатную консультацию</p>

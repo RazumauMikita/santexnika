@@ -1,16 +1,35 @@
 import { getBelarusPhoneError, getNameError } from "@/lib/belarusPhone";
+import { getSpamError, isBotSubmission } from "@/lib/formSpamGuard";
 import { FORM, SITE } from "@/lib/constants";
 
 export type SubmitCallbackResult =
   | { success: true }
   | { success: false; error: string };
 
+type SubmitCallbackOptions = {
+  honeypot?: string;
+  formOpenedAt?: number;
+};
+
 export async function submitCallbackForm(
   name: string,
   phone: string,
+  options: SubmitCallbackOptions = {},
 ): Promise<SubmitCallbackResult> {
   const trimmedName = name.trim();
   const trimmedPhone = phone.trim();
+  const honeypot = options.honeypot ?? "";
+  const formOpenedAt = options.formOpenedAt ?? 0;
+
+  if (isBotSubmission(honeypot)) {
+    return { success: true };
+  }
+
+  const spamError = getSpamError(honeypot, formOpenedAt);
+
+  if (spamError && spamError !== "spam") {
+    return { success: false, error: spamError };
+  }
 
   const nameError = getNameError(trimmedName);
   const phoneError = getBelarusPhoneError(trimmedPhone);
@@ -40,6 +59,7 @@ export async function submitCallbackForm(
         from_name: SITE.name,
         name: trimmedName,
         phone: trimmedPhone,
+        botcheck: "",
       }),
     });
 

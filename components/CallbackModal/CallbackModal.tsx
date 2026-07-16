@@ -1,9 +1,11 @@
 "use client";
 
 import Image from "next/image";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { FormHoneypot } from "@/components/FormHoneypot";
 import { PrivacyPolicyModal } from "@/components/PrivacyPolicyModal";
 import { submitCallbackForm } from "@/lib/submitCallbackForm";
+import { useSubmitLock } from "@/lib/useSubmitLock";
 import {
   appendPhoneDigit,
   BELARUS_PHONE_PLACEHOLDER,
@@ -23,24 +25,27 @@ type CallbackModalProps = {
 };
 
 export function CallbackModal({ isOpen, onClose }: CallbackModalProps) {
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { isSubmitting, runLocked } = useSubmitLock();
   const [error, setError] = useState("");
   const [name, setName] = useState("");
   const [phoneDigits, setPhoneDigits] = useState("");
   const [nameError, setNameError] = useState("");
   const [phoneError, setPhoneError] = useState("");
   const [isPrivacyOpen, setIsPrivacyOpen] = useState(false);
+  const [honeypot, setHoneypot] = useState("");
+  const formOpenedAtRef = useRef(Date.now());
 
   const phone = formatBelarusPhoneDisplay(phoneDigits);
 
   const resetForm = useCallback(() => {
     setError("");
-    setIsSubmitting(false);
     setName("");
     setPhoneDigits("");
     setNameError("");
     setPhoneError("");
     setIsPrivacyOpen(false);
+    setHoneypot("");
+    formOpenedAtRef.current = Date.now();
   }, []);
 
   const handleClose = useCallback(() => {
@@ -50,6 +55,9 @@ export function CallbackModal({ isOpen, onClose }: CallbackModalProps) {
 
   useEffect(() => {
     if (!isOpen) return;
+
+    formOpenedAtRef.current = Date.now();
+    setHoneypot("");
 
     document.body.style.overflow = "hidden";
 
@@ -149,25 +157,26 @@ export function CallbackModal({ isOpen, onClose }: CallbackModalProps) {
       return;
     }
 
-    setIsSubmitting(true);
+    await runLocked(async () => {
+      try {
+        const result = await submitCallbackForm(name.trim(), phone, {
+          honeypot,
+          formOpenedAt: formOpenedAtRef.current,
+        });
 
-    try {
-      const result = await submitCallbackForm(name.trim(), phone);
+        if (!result.success) {
+          throw new Error(result.error);
+        }
 
-      if (!result.success) {
-        throw new Error(result.error);
+        handleClose();
+      } catch (submitError) {
+        setError(
+          submitError instanceof Error
+            ? submitError.message
+            : "Не удалось отправить заявку",
+        );
       }
-
-      handleClose();
-    } catch (submitError) {
-      setError(
-        submitError instanceof Error
-          ? submitError.message
-          : "Не удалось отправить заявку",
-      );
-    } finally {
-      setIsSubmitting(false);
-    }
+    });
   };
 
   const formError = error || nameError || phoneError;
@@ -192,6 +201,8 @@ export function CallbackModal({ isOpen, onClose }: CallbackModalProps) {
           </button>
 
           <form className={styles.form} onSubmit={handleSubmit} noValidate>
+            <FormHoneypot value={honeypot} onChange={setHoneypot} />
+
             <div className={styles.card}>
               <div className={styles.field}>
                 <input
