@@ -82,7 +82,9 @@ export function Header() {
           </nav>
 
           <div className={styles.desktopContact}>
-            <span className={styles.phone}>{SITE.phone}</span>
+            <a className={styles.phone} href={SITE.phoneHref}>
+              {SITE.phone}
+            </a>
             <span className={styles.workingHours}>{SITE.workingHours}</span>
             <button
               type="button"
@@ -128,7 +130,9 @@ export function Header() {
             <a className={styles.mobilePhone} href={SITE.phoneHref}>
               {SITE.phone}
             </a>
-            <span className={styles.mobileWorkingHours}>{SITE.workingHours}</span>
+            <span className={styles.mobileWorkingHours}>
+              {SITE.workingHours}
+            </span>
             <button
               type="button"
               className={styles.mobileCallbackBtn}

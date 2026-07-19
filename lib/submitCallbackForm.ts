@@ -9,6 +9,7 @@ export type SubmitCallbackResult =
 type SubmitCallbackOptions = {
   honeypot?: string;
   formOpenedAt?: number;
+  service?: string;
 };
 
 export async function submitCallbackForm(
@@ -20,6 +21,7 @@ export async function submitCallbackForm(
   const trimmedPhone = phone.trim();
   const honeypot = options.honeypot ?? "";
   const formOpenedAt = options.formOpenedAt ?? 0;
+  const service = options.service?.trim() ?? "";
 
   if (isBotSubmission(honeypot)) {
     return { success: true };
@@ -55,10 +57,13 @@ export async function submitCallbackForm(
       },
       body: JSON.stringify({
         access_key: FORM.accessKey,
-        subject: `Заявка с сайта ${SITE.name} — ${trimmedName}`,
+        subject: service
+          ? `Заявка — ${service} — ${trimmedName}`
+          : `Заявка с сайта ${SITE.name} — ${trimmedName}`,
         from_name: SITE.name,
         name: trimmedName,
         phone: trimmedPhone,
+        service: service || undefined,
         botcheck: "",
       }),
     });

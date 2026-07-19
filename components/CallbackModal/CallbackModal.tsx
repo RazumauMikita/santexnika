@@ -22,9 +22,14 @@ import styles from "./CallbackModal.module.css";
 type CallbackModalProps = {
   isOpen: boolean;
   onClose: () => void;
+  serviceName?: string;
 };
 
-export function CallbackModal({ isOpen, onClose }: CallbackModalProps) {
+export function CallbackModal({
+  isOpen,
+  onClose,
+  serviceName = "",
+}: CallbackModalProps) {
   const { isSubmitting, runLocked } = useSubmitLock();
   const [error, setError] = useState("");
   const [name, setName] = useState("");
@@ -162,6 +167,7 @@ export function CallbackModal({ isOpen, onClose }: CallbackModalProps) {
         const result = await submitCallbackForm(name.trim(), phone, {
           honeypot,
           formOpenedAt: formOpenedAtRef.current,
+          service: serviceName,
         });
 
         if (!result.success) {
@@ -189,7 +195,11 @@ export function CallbackModal({ isOpen, onClose }: CallbackModalProps) {
           onClick={(event) => event.stopPropagation()}
           role="dialog"
           aria-modal="true"
-          aria-label="Заказать обратный звонок"
+          aria-label={
+            serviceName
+              ? `Заказать услугу: ${serviceName}`
+              : "Заказать обратный звонок"
+          }
         >
           <button
             type="button"
@@ -204,6 +214,9 @@ export function CallbackModal({ isOpen, onClose }: CallbackModalProps) {
             <FormHoneypot value={honeypot} onChange={setHoneypot} />
 
             <div className={styles.card}>
+              {serviceName ? (
+                <p className={styles.serviceName}>{serviceName}</p>
+              ) : null}
               <div className={styles.field}>
                 <input
                   type="text"

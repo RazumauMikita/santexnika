@@ -67,6 +67,12 @@
   font-size: 16px;
   font-weight: 600;
   line-height: 1.5;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.phone:hover {
+  color: var(--color-accent);
 }
 
 .header.scrolled .phone {
@@ -182,6 +188,11 @@
   font-size: 20px;
   font-weight: 600;
   line-height: 1.4;
+  text-decoration: none;
+}
+
+.mobilePhone:hover {
+  color: var(--color-accent);
 }
 
 .mobileWorkingHours {

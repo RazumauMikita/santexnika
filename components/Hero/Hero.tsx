@@ -6,6 +6,7 @@ export function Hero() {
     <section className={styles.section} aria-label="Главный баннер">
       <div className={`container ${styles.rowContainer}`}>
         <div className={styles.titleContainer}>
+          <div></div>
           <h1 className={styles.title}>
             Ремонт и монтаж <br /> сантехники <br /> в Витебске
           </h1>

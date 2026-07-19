@@ -30,6 +30,12 @@
   font-weight: 400;
 }
 
+.roboto_condensed_bold {
+  font-family: roboto_condensed_bold, var(--font-roboto-condensed-bold),
+    "Roboto Condensed", sans-serif;
+  font-weight: normal;
+}
+
 html {
   height: 100%;
   scroll-behavior: smooth;
