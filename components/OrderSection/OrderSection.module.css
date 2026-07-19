@@ -1,0 +1,82 @@
+.section {
+  background-color: #2a2a2a;
+  background-image: url("/images/bg-order3.jpg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}
+
+.container {
+  padding-top: 48px;
+  padding-bottom: 48px;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 32px;
+}
+
+.titleBlock {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0;
+  width: 100%;
+  max-width: 640px;
+}
+
+.titleLine {
+  display: inline-block;
+  margin: 0;
+  padding: 10px 18px;
+  background-color: var(--color-accent);
+  font-size: clamp(22px, 4.5vw, 36px);
+  line-height: 1.15;
+  color: var(--color-white);
+  text-transform: uppercase;
+}
+
+.titleLine1 {
+  padding-right: 28px;
+}
+
+.titleLine2 {
+  padding-right: 48px;
+}
+
+.titleLine3 {
+  padding-right: 20px;
+}
+
+.formWrap {
+  flex-shrink: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+@media (min-width: 1024px) {
+  .container {
+    padding-top: 64px;
+    padding-bottom: 64px;
+  }
+
+  .content {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 48px;
+  }
+
+  .titleBlock {
+    flex: 1;
+    max-width: none;
+  }
+
+  .formWrap {
+    width: auto;
+    justify-content: flex-end;
+  }
+}
