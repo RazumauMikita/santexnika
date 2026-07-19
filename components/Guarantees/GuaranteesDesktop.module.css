@@ -1,0 +1,99 @@
+.layout {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(260px, 320px) minmax(0, 1fr);
+  grid-template-rows: auto auto auto;
+  column-gap: clamp(72px, 8vw, 88px);
+  row-gap: clamp(64px, 7vw, 72px);
+  align-items: center;
+  max-width: 1180px;
+  min-height: 620px;
+  margin: 0 auto;
+}
+
+.topLeft {
+  grid-column: 1;
+  grid-row: 1;
+  justify-self: end;
+  align-self: end;
+  max-width: 320px;
+  position: relative;
+  z-index: 2;
+}
+
+.topRight {
+  grid-column: 3;
+  grid-row: 1;
+  justify-self: start;
+  align-self: end;
+  max-width: 320px;
+  position: relative;
+  z-index: 2;
+}
+
+.bottomLeft {
+  grid-column: 1;
+  grid-row: 3;
+  justify-self: end;
+  align-self: start;
+  max-width: 320px;
+  position: relative;
+  z-index: 2;
+}
+
+.bottomRight {
+  grid-column: 3;
+  grid-row: 3;
+  justify-self: start;
+  align-self: start;
+  max-width: 320px;
+  position: relative;
+  z-index: 2;
+}
+
+.centerWrap {
+  display: flex;
+  grid-column: 2;
+  grid-row: 1 / 4;
+  justify-self: center;
+  align-self: center;
+  justify-content: center;
+  align-items: center;
+  z-index: 3;
+}
+
+.centerImage {
+  width: clamp(230px, 26vw, 330px);
+  height: auto;
+}
+
+.arrow {
+  position: absolute;
+  height: auto;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.arrowTop {
+  top: 8%;
+  left: 32%;
+  width: 225px;
+}
+
+.arrowRight {
+  top: 37%;
+  right: 22%;
+  width: 150px;
+}
+
+.arrowLeft {
+  bottom: 37%;
+  left: 19%;
+  width: 150px;
+}
+
+.arrowBottom {
+  bottom: 1%;
+  right: 32%;
+  width: 225px;
+}
