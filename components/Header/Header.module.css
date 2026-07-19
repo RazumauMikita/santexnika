@@ -99,6 +99,17 @@
   transition: color 0.3s ease;
 }
 
+.callbackBtnLabel {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.callbackBtnSecondLine {
+  display: block;
+}
+
 .callbackBtn:hover {
   color: var(--color-accent-hover);
 }

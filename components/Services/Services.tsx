@@ -2,12 +2,15 @@
 
 import { useState } from "react";
 import { CallbackModal } from "@/components/CallbackModal";
-import { ServiceAdvantages } from "@/components/ServiceAdvantages";
 import { ServiceCard } from "@/components/ServiceCard";
 import { SERVICES } from "@/lib/services";
 import styles from "./Services.module.css";
 
-export function Services() {
+type ServicesProps = {
+  continued?: boolean;
+};
+
+export function Services({ continued = false }: ServicesProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedService, setSelectedService] = useState("");
 
@@ -23,12 +26,13 @@ export function Services() {
 
   return (
     <>
-      <section id="services" className={styles.section} aria-label="Услуги">
+      <section
+        id="services"
+        className={`${styles.section} ${continued ? styles.sectionContinued : ""}`}
+        aria-label="Услуги"
+      >
         <div className="container">
-          <ServiceAdvantages />
-
-          <div className={styles.headingContainer}>
-            <h2 className={`${styles.heading} roboto_condensed_bold`}>
+          <div className={styles.headingContainer}>            <h2 className={`${styles.heading} roboto_condensed_bold`}>
               <span className={styles.headingAccent}>Типовые</span>{" "}
               <span className={styles.headingDark}>решения</span>
             </h2>

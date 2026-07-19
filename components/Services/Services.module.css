@@ -3,6 +3,9 @@
   background-color: #f4f6f8;
 }
 
+.sectionContinued {
+  padding-top: 0;
+}
 .headingContainer {
   position: relative;
   display: flex;

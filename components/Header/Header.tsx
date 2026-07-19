@@ -91,7 +91,10 @@ export function Header() {
               className={styles.callbackBtn}
               onClick={() => setIsModalOpen(true)}
             >
-              Заказать бесплатный звонок
+              <span className={styles.callbackBtnLabel}>
+                Заказать бесплатный
+                <span className={styles.callbackBtnSecondLine}>звонок</span>
+              </span>
             </button>
           </div>
 
@@ -138,7 +141,10 @@ export function Header() {
               className={styles.mobileCallbackBtn}
               onClick={handleCallbackClick}
             >
-              Заказать бесплатный звонок
+              <span className={styles.callbackBtnLabel}>
+                Заказать бесплатный
+                <span className={styles.callbackBtnSecondLine}>звонок</span>
+              </span>
             </button>
           </div>
         </div>

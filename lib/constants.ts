@@ -21,9 +21,9 @@ export const FORM = {
 } as const;
 
 export const NAV_LINKS = [
-  { label: "Услуги", href: "#services" },
-  { label: "Объекты", href: "#objects" },
-  { label: "Отзывы", href: "#reviews" },
-  { label: "Гарантии", href: "#guarantees" },
-  { label: "Контакты", href: "#contacts" },
+  { label: "Услуги", href: "/#services" },
+  { label: "Объекты", href: "/#objects" },
+  { label: "Прайс", href: "/price" },
+  { label: "Гарантии", href: "/#guarantees" },
+  { label: "Контакты", href: "/#contacts" },
 ] as const;
